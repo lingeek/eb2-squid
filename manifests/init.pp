@@ -35,7 +35,10 @@
 #
 # Copyright 2016 Your name here, unless otherwise noted.
 #
-class squid {
+class eb2-squid {
+#Install Squid3 package
+include eb2-squid::install
+#END
 
 
 }
