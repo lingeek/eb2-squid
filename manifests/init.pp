@@ -40,5 +40,13 @@ class eb2_squid {
 include eb2_squid::install
 #END
 
+#Check the configuration file
+include eb2_squid::config
+#END
+
+#Start the service
+include eb2_squid::service
+#END
+
 
 }
