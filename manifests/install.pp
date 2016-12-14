@@ -1,4 +1,4 @@
-class eb2-squid::install (
+class eb2_squid::install (
 
 #This value is from OS YAML file because it's a OS specific package name
 $squid3_package    = hiera('squid3_package'),
