@@ -1,3 +1,4 @@
+#Package installation class
 class eb2_squid::install (
 
 #This value is from OS YAML file because it's a OS specific package name
