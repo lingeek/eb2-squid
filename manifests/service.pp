@@ -10,7 +10,7 @@ $service_status = hiera('squid3::service::status'),
 #END
 
 #This is the service name which is different from OS to OS
-$service_name   = hiera('squid3::service::name'),
+$service_name   = hiera('squid3::service'),
 #END
 
 ){
