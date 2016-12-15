@@ -2,53 +2,49 @@
 # Recommended minimum configuration:
 #
 
-acl localnet src 10.0.0.0/8     # RFC1918 possible internal network
-acl localnet src 172.16.0.0/12  # RFC1918 possible internal network
-acl localnet src 192.168.0.0/16 # RFC1918 possible internal network
-acl localnet src fc00::/7       # RFC 4193 local private network range
-acl localnet src fe80::/10      # RFC 4291 link-local (directly plugged) machines
+#General rules
+icp_port <%= @icp_port %>
+snmp_port <%= @snmp_port %>
+cache_mgr <%= @cache_mgr %>
+cachemgr_passwd  <%= @cachemgr_passwd %>
+forwarded_for  <%= @forwarded_for %>
+half_closed_clients  <%= @half_closed_clients %>
+balance_on_multiple_ip   <%= @balance_on_multiple_ip %>
+cache_mem   <%= @cache_mem %>
+persistent_connection_after_error  <%= @persistent_connection_after_error %>
+maximum_object_size  <%= @maximum_object_size %>
+extension_methods  <%= @extension_methods %>
+ignore_expect_100 <%= @ignore_expect_100 %>
+max_filedescriptors  <%= @max_filedescriptors %>
+request_header_max_size  <%= @request_header_max_size %>
+reply_header_max_size  <%= @reply_header_max_size %>
+#I need Internet and with this I don't have internet
+#forward_max_tries  <%= @forward_max_tries %>
+cache_access_log  <%= @cache_access_log %>
+cache_log  <%= @cache_log %>
+cache_store_log   <%= @cache_store_log %>
+cache_dir   <%= @cache_dir %>
+#error_directory <%= @error_directory %>
+read_timeout   <%= @read_timeout %>
+connect_timeout  <%= @connect_timeout %>
+peer_connect_timeout   <%= @peer_connect_timeout %>
+request_timeout   <%= @request_timeout %>
+dns_timeout  <%= @dns_timeout %>
+dead_peer_timeout  <%= @dead_peer_timeout %>
+pconn_timeout   <%= @pconn_timeout %>
+negative_ttl  <%= @negative_ttl %>
+positive_dns_ttl  <%= @positive_dns_ttl %>
+negative_dns_ttl  <%= @negative_dns_ttl %>
+shutdown_lifetime  <%= @shutdown_lifetime %>
+tcp_outgoing_address  <%= @tcp_outgoing_address %>
+snmp_incoming_address  <%= @snmp_incoming_address %>
+http_port  <%= @http_port %>
 
-acl SSL_ports port 443
-acl Safe_ports port 80          # http
-acl Safe_ports port 21          # ftp
-acl Safe_ports port 443         # https
-acl Safe_ports port 70          # gopher
-acl Safe_ports port 210         # wais
-acl Safe_ports port 1025-65535  # unregistered ports
-acl Safe_ports port 280         # http-mgmt
-acl Safe_ports port 488         # gss-http
-acl Safe_ports port 591         # filemaker
-acl Safe_ports port 777         # multiling http
-acl CONNECT method CONNECT
-http_access deny !Safe_ports
 
-http_access deny CONNECT !SSL_ports
-
-http_access allow localhost manager
-http_access deny manager
-
-# We strongly recommend the following be uncommented to protect innocent
-# web applications running on the proxy server who think the only
-# one who can access services on "localhost" is a local user
-#http_access deny to_localhost
-
-#
-# INSERT YOUR OWN RULE(S) HERE TO ALLOW ACCESS FROM YOUR CLIENTS
-#
-
-http_access allow localnet
-http_access allow localhost
-http_access deny all
-
-http_port 3128
+include <%= scope.lookupvar("eb2_squid::config::acl_dir") %>*.conf
 
 #cache_dir aufs /var/cache/squid 100 16 256
 
 coredump_dir /var/cache/squid
 
-refresh_pattern ^ftp:           1440    20%     10080
-refresh_pattern ^gopher:        1440    0%      1440
-refresh_pattern -i (/cgi-bin/|\?) 0     0%      0
-refresh_pattern .               0       20%     4320
-
-
+include <%= scope.lookupvar("eb2_squid::config::acl_dir") %>*.conf
