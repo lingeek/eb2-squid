@@ -3,18 +3,18 @@ class eb2_squid::config (
 
 
 #This values are take from HOST's YAML files
-$squid3_main_conf = hiera('squid3::main::conf'),
+$squid3_main_conf                            = hiera('squid3::main::conf'),
 #END
 
 
 #This value is from common.yaml files
-$file_file    =hiera(file::file),
+$file_file                                   =hiera(file::file),
 #END
 
 #This values are from module YAML file, because they are general rules.
-$icp_port             =hiera('squid3::icp_port'),
-$snmp_port           =hiera('squid3::snmp_port'),
-$cache_mgr       =hiera('squid3::cache_mgr'),
+$icp_port                                    =hiera('squid3::icp_port'),
+$snmp_port                                   =hiera('squid3::snmp_port'),
+$cache_mgr                                   =hiera('squid3::cache_mgr'),
 $cachemgr_passwd        =hiera('squid3::cachemgr_passwd'),
 $forwarded_for        =hiera('squid3::forwarded_for'),
 $half_closed_clients    =hiera('squid3::half_closed_clients'),
@@ -52,6 +52,7 @@ $http_port   =hiera('squid3::http_port'),
 
 #Values from module YAML
 $acl_dir    =hiera('squid3::acl_dir'),
+$institute_dir      =hiera('squid3::institute_dir'),
 $global_dir    =hiera('squid3::global_dir'),
 $generic_acl_conf    =hiera('squid3::generic_acl_conf'),
 $refresh_conf     =hiera('squid3::refresh_pattern'),
@@ -84,6 +85,23 @@ file { $acl_dir:
         require => Class["eb2_squid::install"],
     }
 
+#END
+
+#Create institutes folder in ACL folder
+file { $institute_dir:
+        ensure => directory,
+        purge => true,
+        recurse => true,
+        require => Class["eb2_squid::install"],
+    }
+#END
+
+
+
+
+
+
+
 
 
 file { $generic_acl_conf:
@@ -100,13 +118,16 @@ file { $generic_acl_conf:
 #Global dir
 file { $global_dir:
         ensure => directory,
-        #owner => 'root',
-        #group => 'root',
         purge => true,
         recurse => true,
         source => ["puppet:///eb2_squid/"],
         require => Class["eb2_squid::install"],
     }
+
+
+
+
+
 
 #file { $refresh_conf:
 #  ensure  => $file_file,
