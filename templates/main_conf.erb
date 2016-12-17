@@ -47,4 +47,4 @@ include <%= scope.lookupvar("eb2_squid::config::acl_dir") %>*.conf
 
 coredump_dir /var/cache/squid
 
-include <%= scope.lookupvar("eb2_squid::config::acl_dir") %>*.conf
+include <%= scope.lookupvar("eb2_squid::config::global_dir") %>*.conf
